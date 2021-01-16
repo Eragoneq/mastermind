@@ -1,4 +1,4 @@
-
+//chuj komentarz testowy
 class Game {
     constructor(id) {
         this.gameID = id;
