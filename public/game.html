@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mastermind - Game</title>
+    <link rel="stylesheet" href="stylesheets/game.css" />
+  </head>
+  <body>
+    <main>
+      <section id="board" class="container">
+
+      </section>
+      <section id="state" class="container">
+        <div id="rules">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas feugiat porta lorem ut faucibus. Aliquam erat volutpat. Nam vestibulum bibendum tortor, et varius nunc ullamcorper quis. Cras vitae vestibulum enim. Suspendisse nec dignissim neque. Curabitur non lacinia diam. Mauris vel pellentesque mi, non pharetra nunc. Sed fermentum nunc turpis. Cras fermentum semper elit quis hendrerit. Vestibulum eleifend turpis nec magna luctus, nec scelerisque lacus consectetur. In non volutpat dolor, nec pulvinar odio. In malesuada, orci in pretium porta, est neque iaculis elit, quis posuere ante dui sit amet eros.
+          Vestibulum lacinia nec magna vitae laoreet. Integer faucibus neque eget enim vulputate molestie. Duis vitae auctor nunc, et vestibulum odio. Cras mollis nibh tellus, ut cursus libero fermentum eget. Nullam et lacus eu purus fermentum iaculis et in nunc. In urna ex, iaculis ut aliquam non, dictum id mi. Praesent eget vestibulum neque. Aliquam dapibus at lectus id porttitor. Curabitur in tempus erat, a molestie urna. 
+        </div>
+        <hr>
+        <div id="buttons">
+          <button onclick="add('red')">red</button>
+          <button onclick="add('yellow')">yellow</button>
+          <button onclick="add('blue')">blue</button>
+          <button onclick="add('green')">green</button>
+          <button onclick="add('purple')">purple</button>
+          <button onclick="sendTestSocket('Wiadomosc')">submit</button>
+        </div>
+        <h3 id="info"></h3>
+      </section>
+    </main>
+    <script src="javascripts/game.js"></script>
+    <script src="javascripts/messages.js"></script>
+  </body>
+</html>
