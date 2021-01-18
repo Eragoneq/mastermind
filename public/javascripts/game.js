@@ -1,30 +1,19 @@
 //@ts-check
-const target = document.getElementById("info");
-const socket = new WebSocket("ws://localhost:3000");
 
-let arr = new Array();
+socket.onmessage = (evt) => {
+    let msgObj = JSON.parse(evt.data);
 
-function add(col) {
-    arr.push(col);
-    target.innerHTML = arr.toString();
-}
+    // if(msgObj.type == Messages.T_TEST) {
+    //     console.log("[TEST] " + msgObj.data + " from server ");
+    // } else {
+    //     console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
+    // }
+    if(msgObj.type == Messages.T_PLAYER_TYPE) {
+        createTimer();
+        console.log("PLAYER A");
+    }else{
+        console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
+    }
 
-// socket.onmessage = function(event){
-//     target.innerHTML = event.data;
-// };
+};
 
-// socket.onopen = function(){
-//     socket.send("Hello from the client!");
-//     target.innerHTML = "Sending a first message to the server ...";
-// };
-
-function submit() {
-    socket.send(JSON.stringify(arr));
-}
-
-function sendTestSocket(info) {
-    // @ts-ignore
-    let msg = Messages.O_TEST;
-    msg.data = info;
-    socket.send(JSON.stringify(msg));
-}

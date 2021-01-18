@@ -43,9 +43,17 @@ wss.on("connection", function (ws) {
     activePlayers[con.id] = newGame;    // Set the connected id it's game
 
     console.log("Current players:");
-    console.log(activePlayers);
+    console.log(Object.keys(activePlayers));
 
     if(newGame.isFull()) {
+        let gameInfo = msg.O_PLAYER_TYPE;
+
+        gameInfo.data = "SET";
+        newGame.player1.send(JSON.stringify(gameInfo));
+
+        gameInfo.data = "GUESS";
+        newGame.player2.send(JSON.stringify(gameInfo));
+
         newGame = new Game(statistics.gamesPlayed++);   // Check if the game is full, create new one if that is the case
         console.log("Game created with ID " + statistics.gamesPlayed);
     }
@@ -56,7 +64,7 @@ wss.on("connection", function (ws) {
         if(msgObj.type == msg.T_TEST) {
             console.log("[TEST] " + msgObj.data + " from player " + event.target.id + " in game " + activePlayers[event.target.id].gameID);
         } else {
-            console.log("[SOCKET] " + msgObj.type);
+            console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
         }
         
     };
@@ -65,7 +73,7 @@ wss.on("connection", function (ws) {
         console.log("Lost connection to client with ID " + event.target.id);
         delete activePlayers[event.target.id];
         console.log("Current players:");
-        console.log(activePlayers);
+        console.log(Object.keys(activePlayers));
     };
 });
 
