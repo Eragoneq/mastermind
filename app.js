@@ -10,22 +10,26 @@ const server = http.createServer(app);
 
 app.use(express.static(__dirname + "/public"));
 app.use("/game", function (req, res) {
-    res.sendFile("public/game.html", { root: "./" });
+    res.sendFile("game.html", { root: "./public" });
 });
 
 app.use("/*", function (req, res) {
-    res.sendFile("public/splash.html", { root: "./" });
+    res.sendFile("splash.html", { root: "./public" });
 });
 
 
 const wss = new websocket.Server({ server });
 const msg = require("./public/javascripts/messages");
 
-let gameStats = () => {
-    this.gamesPlayed = 0;
+class GameStats {
+    constructor() {
+        this.gamesPlayed = 0;
+    }
 };
 
-let newGame = new Game(gameStats.gamesPlayed++);
+let statistics = new GameStats();
+
+let newGame = new Game(statistics.gamesPlayed++);
 let connectionId = 0;
 
 let activePlayers = {};
@@ -38,18 +42,31 @@ wss.on("connection", function (ws) {
     newGame.addPlayer(con);             // Add a player to the game
     activePlayers[con.id] = newGame;    // Set the connected id it's game
 
-    if(newGame.isFull()) newGame = new Game(gameStats.gamesPlayed++);   // Check if the game is full, create new one if that is the case
+    console.log("Current players:");
+    console.log(activePlayers);
 
-    ws.on("message", (message) => {
-        let msgObj = JSON.parse(message);
+    if(newGame.isFull()) {
+        newGame = new Game(statistics.gamesPlayed++);   // Check if the game is full, create new one if that is the case
+        console.log("Game created with ID " + statistics.gamesPlayed);
+    }
+
+    ws.onmessage = (event) => {
+        let msgObj = JSON.parse(event.data);
 
         if(msgObj.type == msg.T_TEST) {
-            console.log("[TEST] " + msgObj.data);
+            console.log("[TEST] " + msgObj.data + " from player " + event.target.id + " in game " + activePlayers[event.target.id].gameID);
         } else {
-            console.log(msgObj.type);
+            console.log("[SOCKET] " + msgObj.type);
         }
         
-    });
+    };
+
+    ws.onclose = (event) => {
+        console.log("Lost connection to client with ID " + event.target.id);
+        delete activePlayers[event.target.id];
+        console.log("Current players:");
+        console.log(activePlayers);
+    };
 });
 
 server.listen(port);

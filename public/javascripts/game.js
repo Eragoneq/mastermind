@@ -23,6 +23,7 @@ function submit() {
 }
 
 function sendTestSocket(info) {
+    // @ts-ignore
     let msg = Messages.O_TEST;
     msg.data = info;
     socket.send(JSON.stringify(msg));
