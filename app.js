@@ -54,23 +54,71 @@ wss.on("connection", function (ws) {
         gameInfo.data = "GUESS";
         newGame.player2.send(JSON.stringify(gameInfo));
 
+        newGame.state = "SETTING";
+
         newGame = new Game(statistics.gamesPlayed++);   // Check if the game is full, create new one if that is the case
         console.log("Game created with ID " + statistics.gamesPlayed);
     }
 
     ws.onmessage = (event) => {
         let msgObj = JSON.parse(event.data);
+        let game = activePlayers[event.target.id];
 
-        if(msgObj.type == msg.T_TEST) {
-            console.log("[TEST] " + msgObj.data + " from player " + event.target.id + " in game " + activePlayers[event.target.id].gameID);
-        } else {
-            console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
+        switch (msgObj.type) {
+            case msg.T_TEST:
+                console.log("[TEST] " + msgObj.data + " from player " + event.target.id + " in game " + activePlayers[event.target.id].gameID);
+                break;
+            case msg.T_SET_COLORS:
+                if(game.set_color === null || game.state === "SETTING") {
+                    // Set the colors of the game
+                    game.set_color = msgObj.data;
+
+                    let resp = msg.O_NEXT_TURN;
+                    game.player2.send(JSON.stringify(resp));
+                }
+                break;
+            case msg.T_GUESS_COLORS:
+                if(game.turn < 9) {
+                    // Add the guess colors (array) to array of guesses
+                    game.guesses.push(msgObj.data);
+
+                    let resp = msg.O_NEXT_TURN; // Send client info about new turn
+                    resp.data = game.guesses;   // Send information about the check pins that opponent set
+                    game.player1.send(JSON.stringify(resp));
+
+                    console.log(game.guesses);
+                }
+                break;
+            case msg.T_CHECK_COLORS:
+                if(game.turn < 9) {
+                    // Add the check colors (array) to array of guesses
+                    game.checks.push(msgObj.data);
+
+                    game.turn++;                // Update turn count
+                    let resp = msg.O_NEXT_TURN; // Send client info about new turn
+                    resp.data = game.checks;    // Send client info about the guessed color pins
+                    game.player2.send(JSON.stringify(resp));
+
+                    console.log(game.checks);
+                }
+                break;
+            default:
+                console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
+                break;
         }
         
     };
 
     ws.onclose = (event) => {
         console.log("Lost connection to client with ID " + event.target.id);
+        let game = activePlayers[event.target.id];
+        let winner = event.target === game.player1 ? game.player2 : game.player1;
+
+        let winMessage = msg.O_GAME_WON;
+        winMessage.data = "Your opponent disconnected, you win!";
+
+        winner.send(JSON.stringify(winMessage));
+
         delete activePlayers[event.target.id];
         console.log("Current players:");
         console.log(Object.keys(activePlayers));

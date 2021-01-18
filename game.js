@@ -6,7 +6,9 @@ class Game {
         this.player2 = null;
 
         this.set_color = null;
-        this.last_guess = null;
+
+        this.guesses = [];
+        this.checks = [];
 
         this.turn = 0;
 

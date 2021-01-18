@@ -35,6 +35,18 @@
         data: ""
     }
 
+    exports.T_NEXT_TURN = "NEXT-TURN";
+    exports.O_NEXT_TURN = {
+        type: exports.T_NEXT_TURN,
+        data: ""
+    }
+
+    exports.T_ERROR = "ERROR";
+    exports.O_ERROR = {
+        type: exports.T_ERROR,
+        data: ""
+    }
+
     exports.T_TEST = "TEST";
     exports.O_TEST = {
         type: exports.T_TEST,

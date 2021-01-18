@@ -1,5 +1,7 @@
 //@ts-check
 const target = document.getElementById("info");
+const board = document.getElementById("board");
+const turnCounter = document.getElementById("turn");
 const socket = new WebSocket("ws://localhost:3000");
 
 class Timer {
@@ -25,6 +27,25 @@ class Timer {
 
 const timer = new Timer();
 let arr = new Array();
+let colorsArray = new Array();
+let checkArray = new Array();
+
+function updateBoard(arr, type) {
+    if(type == "colors") {
+        colorsArray = arr;
+        let c = document.getElementById("colorPins")
+        c.innerHTML = "";
+
+        colorsArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
+
+    } else {
+        checkArray = arr;
+        let c = document.getElementById("checkPins")
+        c.innerHTML = "";
+
+        checkArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
+    }
+}
 
 function createTimer() {
     timer.startTimer(document.getElementById("time"));
@@ -33,20 +54,36 @@ function createTimer() {
 function add(col) {
     if(arr.length < 4) arr.push(col);
     target.innerHTML = arr.toString();
-    console.log(arr.toString());
+    // console.log(arr.toString());
 }
 
 function clear() {
     arr = [];
-    console.log(arr);
+    // console.log(arr);
     target.innerHTML = "";
 }
 
 function submit() {
     // @ts-ignore
-    let msg = Messages.O_GUESS_COLORS;
+    let msg = null;
+    if(playerType == "SET"){
+        if(turn == 0) {
+            msg = Messages.O_SET_COLORS;
+        } else {
+            msg = Messages.O_CHECK_COLORS;
+            checkArray.push(arr);
+            updateBoard(checkArray, "checks");
+        }
+        turn++;
+    } else {
+        msg = Messages.O_GUESS_COLORS;
+        colorsArray.push(arr);
+        updateBoard(colorsArray, "colors");
+    }
     msg.data = arr;
     socket.send(JSON.stringify(msg));
+    arr = [];
+    disableButtons();
 }
 
 function sendTestSocket(info) {
@@ -56,7 +93,31 @@ function sendTestSocket(info) {
     socket.send(JSON.stringify(msg));
 }
 
+function openColors() {
+    document.querySelectorAll(".colors,.clear,.submit").forEach((button) => {
+        button.style.display = "block";
+    });
+}
+
+function openChecks() {
+    document.querySelectorAll(".checks,.clear,.submit").forEach((button) => {
+        button.style.display = "block";
+    });
+}
+
+function disableButtons() {
+    document.querySelectorAll("button").forEach((button) => {
+        button.style.display = "none";
+    });
+}
+
 document.querySelectorAll('.colors').forEach((button) => {
+    button.addEventListener("click", () => {
+        add(button.innerHTML);
+    });
+});
+
+document.querySelectorAll('.checks').forEach((button) => {
     button.addEventListener("click", () => {
         add(button.innerHTML);
     });
@@ -73,3 +134,5 @@ document.querySelectorAll('.submit').forEach((button) => {
         submit();
     });
 });
+
+disableButtons();
