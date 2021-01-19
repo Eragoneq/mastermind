@@ -36,7 +36,6 @@
 
 .grid-container {
     display: grid;
-    height: 98vh;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px 10px;
@@ -60,7 +59,7 @@ section {
     box-shadow: 0px 4px 4px var(--mainshadow);
     border: none;
     border-radius: 40px;
-    padding: 40px;
+    padding: 30px;
 }
 
 .button_container {
@@ -86,7 +85,7 @@ section {
     align-items: center;
     background-color: var(--elements);
     min-height: 50px;
-    min-width: 300px;
+    min-width: 60%;
     padding: 10px;
     margin-right: 5px;
     box-shadow: 0px 4px 4px var(--mainshadow);
@@ -106,6 +105,7 @@ section {
     background-color: var(--elements);
     min-height: 50px;
     min-width: 50px;
+    max-width: 50px;
     margin-left: 5px;
     padding: 10px;
     box-shadow: 0px 4px 4px var(--mainshadow);
