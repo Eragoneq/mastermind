@@ -13,13 +13,14 @@ socket.onmessage = (evt) => {
 
             if(playerType == "SET") {
                 openColors();
+                target.innerHTML = "Secret pins: ";
                 console.log("SETTING COLORS");
             }
 
             break;
         case Messages.T_NEXT_TURN:
             if(playerType == "GUESS") {
-                turn++;
+                updateTurn();
                 openColors();
                 console.log("GUESSING NOW");
                 console.log(msgObj.data);

@@ -5,35 +5,65 @@
     <link rel="stylesheet" href="stylesheets/game.css" />
   </head>
   <body>
-    <main>
+    <main class="grid-container">
       <section id="board" class="container">
         <div id="colorPins"></div>
         <br>
-        <br>
-        <br>
         <div id="checkPins"></div>
+        <div id="set_pins" class="row">
+          <div class="pin red">red</div>
+          <div class="pin blue">red</div>
+          <div class="pin purple">red</div>
+          <div class="pin purple">red</div>
+        </div>
+        <hr>
+        <div class="row_container">
+          <div class="row">
+            <div class="pin red">red</div>
+            <div class="pin red">red</div>
+            <div class="pin red">red</div>
+            <div class="pin red">red</div>
+          </div>
+          <div class="row">
+            <div class="pin red">red</div>
+            <div class="pin green">red</div>
+            <div class="pin blue">red</div>
+            <div class="pin yellow">red</div>
+          </div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+        </div>
       </section>
-      <hr>
       <section id="state" class="container">
         <div id="rules">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas feugiat porta lorem ut faucibus. Aliquam erat volutpat. Nam vestibulum bibendum tortor, et varius nunc ullamcorper quis. Cras vitae vestibulum enim. Suspendisse nec dignissim neque. Curabitur non lacinia diam. Mauris vel pellentesque mi, non pharetra nunc. Sed fermentum nunc turpis. Cras fermentum semper elit quis hendrerit. Vestibulum eleifend turpis nec magna luctus, nec scelerisque lacus consectetur. In non volutpat dolor, nec pulvinar odio. In malesuada, orci in pretium porta, est neque iaculis elit, quis posuere ante dui sit amet eros.
-          Vestibulum lacinia nec magna vitae laoreet. Integer faucibus neque eget enim vulputate molestie. Duis vitae auctor nunc, et vestibulum odio. Cras mollis nibh tellus, ut cursus libero fermentum eget. Nullam et lacus eu purus fermentum iaculis et in nunc. In urna ex, iaculis ut aliquam non, dictum id mi. Praesent eget vestibulum neque. Aliquam dapibus at lectus id porttitor. Curabitur in tempus erat, a molestie urna. 
-        </div>
-        <hr>
-        <div id="buttons">
-          <button class="colors">red</button>
-          <button class="colors">yellow</button>
-          <button class="colors">blue</button>
-          <button class="colors">green</button>
-          <button class="colors">purple</button>
-          <button class="checks">black</button>
-          <button class="checks">white</button>
-          <button class="clear">clear</button>
-          <button class="submit">submit</button>
         </div>
         <h3 id="info"></h3>
         <h3 id="turn"></h3>
         <h3 id="time"></h3>
+      </section>
+      <section id="controls">
+        <h4>Buttons</h4>
+        <div id="buttons" class="row_container">
+          <div id="row1" class="row">
+            <div class="table_col"><button class="pin colors red">red</button></div>
+            <div class="table_col"><button class="pin colors yellow">yellow</button></div>
+            <div class="table_col"><button class="pin colors blue">blue</button></div>
+            <div class="table_col"><button class="pin colors green">green</button></div>
+            <div class="table_col"><button class="pin colors purple">purple</button></div>
+            <div class="table_check"><button class="pin checks black">black</button></div>
+            <div class="table_check"><button class="pin checks white">white</button></div>
+          </div>
+          <div id="row2" class="row">
+            <div class="table_info"><button class="pin clear">clear</button></div>
+            <div class="table_info"><button class="pin submit">submit</button></div>
+          </div>
+        </div>
       </section>
     </main>
     <script src="javascripts/messages.js"></script>

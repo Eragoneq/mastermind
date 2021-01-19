@@ -13,7 +13,7 @@ class Timer {
     startTimer(element) {
         this.timer = setInterval(() => {
             this.time += 1;
-            element.innerHTML = `${Math.floor(this.time / 60).toString().padStart(2, '0')}:${(this.time % 60).toString().padStart(2, '0')}`
+            element.innerHTML = `Timer: ${Math.floor(this.time / 60).toString().padStart(2, '0')}:${(this.time % 60).toString().padStart(2, '0')}`
         }, 1000);
     }
 
@@ -47,6 +47,11 @@ function updateBoard(arr, type) {
     }
 }
 
+function updateTurn() {
+    turn++;
+    turnCounter.innerHTML = "Guess: " + turn.toString();
+}
+
 function createTimer() {
     timer.startTimer(document.getElementById("time"));
 }
@@ -60,7 +65,7 @@ function add(col) {
 function clear() {
     arr = [];
     // console.log(arr);
-    target.innerHTML = "";
+    target.innerHTML = "Current pins: ";
 }
 
 function submit() {
@@ -74,7 +79,7 @@ function submit() {
             checkArray.push(arr);
             updateBoard(checkArray, "checks");
         }
-        turn++;
+        updateTurn();
     } else {
         msg = Messages.O_GUESS_COLORS;
         colorsArray.push(arr);
@@ -82,42 +87,38 @@ function submit() {
     }
     msg.data = arr;
     socket.send(JSON.stringify(msg));
-    arr = [];
+    clear();
     disableButtons();
 }
 
 function sendTestSocket(info) {
-    // @ts-ignore
     let msg = Messages.O_TEST;
     msg.data = info;
     socket.send(JSON.stringify(msg));
 }
 
 function openColors() {
-    document.querySelectorAll(".colors,.clear,.submit").forEach((button) => {
-        button.style.display = "block";
+    document.querySelectorAll(".table_col,.table_info").forEach((button) => {
+        button.removeAttribute("style");
     });
+    document.getElementById("buttons").removeAttribute("style");
 }
 
 function openChecks() {
-    document.querySelectorAll(".checks,.clear,.submit").forEach((button) => {
-        button.style.display = "block";
+    document.querySelectorAll(".table_check,.table_info").forEach((button) => {
+        button.removeAttribute("style");
     });
+    document.getElementById("buttons").removeAttribute("style");
 }
 
 function disableButtons() {
-    document.querySelectorAll("button").forEach((button) => {
+    document.querySelectorAll(".table_check,.table_info,.table_col").forEach((button) => {
         button.style.display = "none";
     });
+    document.getElementById("buttons").style.display = "none";
 }
 
-document.querySelectorAll('.colors').forEach((button) => {
-    button.addEventListener("click", () => {
-        add(button.innerHTML);
-    });
-});
-
-document.querySelectorAll('.checks').forEach((button) => {
+document.querySelectorAll('.colors,.checks').forEach((button) => {
     button.addEventListener("click", () => {
         add(button.innerHTML);
     });

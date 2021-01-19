@@ -1,0 +1,156 @@
+:root {
+    --color1: #ED4C4C;
+    --shadow1: #832D2D;
+
+    --color2: #F0F356;
+    --shadow2: #B9BB45;
+
+    --color3: #4A92D5;
+    --shadow3: #326695;
+
+    --color4: #6DDD5A;
+    --shadow4: #4C993E;
+
+
+    --color5: #A620FF;
+    --shadow5: #6a17a1;
+
+    --color6: #000000;
+    --color7: #FFFFFF;
+    --shadow6: #CCCCCC;
+
+    --color8: #5f5d5d;
+
+    --color9: #1be9ab;
+    --shadow9: #13966e;
+
+    --bg: #6C5E54;
+
+    --main: #E9C496;
+    --mainshadow: #977f62;
+
+    --elements: #FFF7E7;
+    --accent1: #83A95C;
+    --accent2: #944E6C;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px 10px;
+    grid-template-areas:
+      ". x x2 ."
+      ". x x2 ."
+      ". x x3 .";
+}
+
+#board { grid-area: x; }
+#state { grid-area: x2; }
+#controls { grid-area: x3; }
+
+body {
+    background-color: var(--bg);
+}
+
+section {
+    /* border: 2px solid red; */
+    background-color: var(--main);
+    box-shadow: 0px 4px 4px var(--mainshadow);
+    border: none;
+    border-radius: 40px;
+    padding: 40px;
+}
+
+.button_container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+/* .table_col, .table_info, .table_check {
+    padding: 5px;
+} */
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: var(--elements);
+    min-height: 70px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 4px 4px var(--mainshadow);
+    border: none;
+    border-radius: 20px;
+}
+
+.table_col {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.pin {
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0px;
+}
+
+.red {
+    background-color: var(--color1);
+    box-shadow: 0px 4px 4px var(--shadow1);
+}
+
+.yellow {
+    background-color: var(--color2);
+    box-shadow: 0px 4px 4px var(--shadow2);
+}
+
+.blue {
+    background-color: var(--color3);
+    box-shadow: 0px 4px 4px var(--shadow3);
+}
+
+.green {
+    background-color: var(--color4);
+    box-shadow: 0px 4px 4px var(--shadow4);
+}
+
+.purple {
+    background-color: var(--color5);
+    box-shadow: 0px 4px 4px var(--shadow5);
+}
+
+.black {
+    background-color: var(--color6);
+    box-shadow: 0px 4px 4px var(--shadow6);
+}
+
+.white {
+    background-color: var(--color7);
+    box-shadow: 0px 4px 4px var(--shadow6);
+}
+
+.clear {
+    background-color: var(--color8);
+    box-shadow: 0px 4px 4px var(--shadow6);
+}
+
+.clear::before {
+    content: url("../images/delete.svg");
+}
+
+.submit {
+    background-color: var(--color9);
+    box-shadow: 0px 4px 4px var(--shadow9);
+}
+
+.submit::before {
+    content: url("../images/done.svg");
+}
