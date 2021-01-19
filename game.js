@@ -24,8 +24,14 @@ class Game {
     isFull() {
         return this.player1 !== null && this.player2 !== null ? true : false;
     }
+}
+
+class Color {
+    constructor() {
+        this.id = a;
 
 
+    }
 }
 
 module.exports = Game;

@@ -112,9 +112,9 @@ wss.on("connection", function (ws) {
     ws.onclose = (event) => {
         console.log("Lost connection to client with ID " + event.target.id);
         let game = activePlayers[event.target.id];
+        delete activePlayers[event.target.id];
         if(game.state == "PREP") {
             game.player1 = null;
-            delete activePlayers[event.target.id];
             return;
         }
         let winner = event.target === game.player1 ? game.player2 : game.player1;
