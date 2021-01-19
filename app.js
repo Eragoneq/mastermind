@@ -3,7 +3,7 @@ const http = require("http");
 const websocket = require("ws");
 const Game = require("./game");
 
-const port = process.argv[2];
+const port = process.env.PORT || process.argv[2] || 3000;
 const app = express();
 
 const server = http.createServer(app);
@@ -129,4 +129,4 @@ wss.on("connection", function (ws) {
     };
 });
 
-server.listen(port);
+server.listen(port, '0.0.0.0');
