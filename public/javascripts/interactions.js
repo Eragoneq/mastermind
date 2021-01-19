@@ -24,7 +24,9 @@ socket.onmessage = (evt) => {
                 openColors();
                 console.log("GUESSING NOW");
                 console.log(msgObj.data);
-                if(turn != 1) updateBoard(msgObj.data, "checks")
+                if(turn !== 1) {
+                    updateBoard(msgObj.data, "checks")
+                }
             } else {
                 openChecks();
                 console.log("CHECKING NOW");

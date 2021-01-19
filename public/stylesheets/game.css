@@ -72,6 +72,12 @@ section {
     padding: 5px;
 } */
 
+.rowList_container {
+    list-style-type: none;
+    list-style: none;
+    padding-left: 0;
+}
+
 .row {
     display: flex;
     flex-direction: row;

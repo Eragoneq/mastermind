@@ -30,20 +30,57 @@ let arr = new Array();
 let colorsArray = new Array();
 let checkArray = new Array();
 
+// ------------------- HTML color pins in rows: adding and erasing -------------------------------
+function addColorDivToRow(color, row) {
+    //@ts-ignore
+    let colorDiv = document.createElement('div');
+    colorDiv.className = 'pin ' + color;
+    row.appendChild(colorDiv);
+}
+
+function addAllColorDivsToRow(colors, row) {
+    colors.forEach(color => {
+        addColorDivToRow(color, row);
+    });
+}
+
+function addAllColorRows(colors, rowList) {
+    for (let i = 0; i < colors.length; i++) {
+        addAllColorDivsToRow(colors[i], rowList[i]);
+    }
+}
+
+function clearRow(row) {
+    row.innerHTML = "";
+}
+
+function clearAllRows(rowList) {
+    rowList.forEach(row => {
+        clearRow(row);
+    });
+}
+// -----------------------------------------------------------------------------------------------
+
 function updateBoard(arr, type) {
     if(type == "colors") {
         colorsArray = arr;
-        let c = document.getElementById("colorPins")
-        c.innerHTML = "";
+        let rowContainer = document.querySelector('.rowList_container');
+        let rowList = rowContainer.querySelectorAll('div.row');
+        
+        clearAllRows(rowList);
+        addAllColorRows(colorsArray, rowList);
 
-        colorsArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
+        // let c = document.getElementById("colorPins")
+        // c.innerHTML = "";
+
+        // colorsArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
 
     } else {
         checkArray = arr;
-        let c = document.getElementById("checkPins")
-        c.innerHTML = "";
+        // let c = document.getElementById("checkPins")
+        // c.innerHTML = "";
 
-        checkArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
+        // checkArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
     }
 }
 
@@ -56,16 +93,24 @@ function createTimer() {
     timer.startTimer(document.getElementById("time"));
 }
 
-function add(col) {
-    if(arr.length < 4) arr.push(col);
+function updateLive(color) {
+    if(arr.length < 4) arr.push(color);
+    updateLiveRow(arr);
     target.innerHTML = arr.toString();
     // console.log(arr.toString());
 }
 
-function clear() {
+function updateLiveRow(colors) {
+    let liveRow = document.getElementById('live_pins');
+    clearRow(liveRow);
+    addAllColorDivsToRow(colors, liveRow);
+}
+
+function clearLive() {
     arr = [];
     // console.log(arr);
     target.innerHTML = "Current pins: ";
+    updateLiveRow(arr);
 }
 
 function submit() {
@@ -87,7 +132,7 @@ function submit() {
     }
     msg.data = arr;
     socket.send(JSON.stringify(msg));
-    clear();
+    clearLive();
     disableButtons();
 }
 
@@ -120,13 +165,13 @@ function disableButtons() {
 
 document.querySelectorAll('.colors,.checks').forEach((button) => {
     button.addEventListener("click", () => {
-        add(button.innerHTML);
+        updateLive(button.innerHTML);
     });
 });
 
 document.querySelectorAll('.clear').forEach((button) => {
     button.addEventListener("click", () => {
-        clear();
+        clearLive();
     });
 });
 

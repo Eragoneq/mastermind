@@ -7,42 +7,35 @@
   <body>
     <main class="grid-container">
       <section id="board" class="container">
-        <div id="colorPins"></div>
+        <!-- <div id="colorPins"></div>
         <br>
-        <div id="checkPins"></div>
-        <div id="set_pins" class="row">
-          <div class="pin red">red</div>
-          <div class="pin blue">red</div>
-          <div class="pin purple">red</div>
-          <div class="pin purple">red</div>
+        <div id="checkPins"></div> -->
+        <div id="live_pins" class="row">
+          <!-- <div class="pin red"></div>
+          <div class="pin blue"></div>
+          <div class="pin purple"></div>
+          <div class="pin purple"></div> -->
         </div>
         <hr>
-        <div class="row_container">
-          <div class="row">
-            <div class="pin red">red</div>
-            <div class="pin red">red</div>
-            <div class="pin red">red</div>
-            <div class="pin red">red</div>
-          </div>
-          <div class="row">
-            <div class="pin red">red</div>
-            <div class="pin green">red</div>
-            <div class="pin blue">red</div>
-            <div class="pin yellow">red</div>
-          </div>
-          <div class="row">
-            <div class="pin red">red</div>
-            <div class="pin yellow">red</div>
-            <div class="pin red">red</div>
-            <div class="pin yellow">red</div>
-          </div>
-          <div class="row"></div>
-          <div class="row"></div>
-          <div class="row"></div>
-          <div class="row"></div>
-          <div class="row"></div>
-          <div class="row"></div>
-        </div>
+        <ul class="rowList_container">
+          <li>
+            <div class="row">
+              <!-- <div class="pin red">red</div>
+              <div class="pin red">red</div>
+              <div class="pin red">red</div>
+              <div class="pin red">red</div> -->
+            </div>
+          </li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+          <li><div class="row"></div></li>
+        </ul>
       </section>
       <section id="state" class="container">
         <div id="rules">
@@ -54,7 +47,7 @@
       </section>
       <section id="controls">
         <h4>Buttons</h4>
-        <div id="buttons" class="row_container">
+        <div id="buttons" class="rowList_container">
           <div id="row1" class="row">
             <div class="table_col"><button class="pin colors red">red</button></div>
             <div class="table_col"><button class="pin colors yellow">yellow</button></div>
