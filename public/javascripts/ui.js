@@ -2,7 +2,7 @@
 const target = document.getElementById("info");
 const board = document.getElementById("board");
 const turnCounter = document.getElementById("turn");
-const socket = new WebSocket("ws://localhost:3000");
+const socket = new WebSocket("ws://" + location.host);
 
 class Timer {
     constructor() {
