@@ -36,6 +36,7 @@
 
 .grid-container {
     display: grid;
+    height: 98vh;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px 10px;
@@ -82,13 +83,39 @@ section {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
     background-color: var(--elements);
-    min-height: 70px;
+    min-height: 50px;
+    min-width: 300px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-right: 5px;
     box-shadow: 0px 4px 4px var(--mainshadow);
     border: none;
     border-radius: 20px;
+    flex-grow: 4;
+}
+
+#row1 {
+    margin-bottom: 10px;
+}
+
+.square {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    background-color: var(--elements);
+    min-height: 50px;
+    min-width: 50px;
+    margin-left: 5px;
+    padding: 10px;
+    box-shadow: 0px 4px 4px var(--mainshadow);
+    border: none;
+    border-radius: 20px;
+}
+
+li {
+    display: flex;
+    margin-bottom: 10px;
 }
 
 .table_col {
@@ -96,12 +123,24 @@ section {
     margin-right: 5px;
 }
 
+.smallpin  {
+    border: none;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0px;
+}
+
 .pin {
     border: none;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin: 5px;
+    width: 40px;
+    height: 40px;
+    /* margin: 5px; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
