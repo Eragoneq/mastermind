@@ -58,8 +58,8 @@ section {
     background-color: var(--main);
     box-shadow: 0px 4px 4px var(--mainshadow);
     border: none;
-    border-radius: 40px;
-    padding: 30px;
+    border-radius: 4vh;
+    padding: 3vh;
 }
 
 .button_container {
@@ -84,13 +84,13 @@ section {
     justify-content: space-around;
     align-items: center;
     background-color: var(--elements);
-    min-height: 50px;
-    min-width: 60%;
+    min-height: 5.5vh;
+    max-height: 5.5vh;
     padding: 10px;
     margin-right: 5px;
     box-shadow: 0px 4px 4px var(--mainshadow);
     border: none;
-    border-radius: 20px;
+    border-radius: 2vh;
     flex-grow: 4;
 }
 
@@ -102,15 +102,18 @@ section {
     display: flex;
     flex-wrap: wrap;
     flex: 1;
+    justify-content: space-around;
+    align-items: center;
     background-color: var(--elements);
-    min-height: 50px;
-    min-width: 50px;
-    max-width: 50px;
+    min-height: 5.5vh;
+    max-height: 5.5vh;
+    min-width: 5.5vh;
+    max-width: 5.5vh;
     margin-left: 5px;
     padding: 10px;
     box-shadow: 0px 4px 4px var(--mainshadow);
     border: none;
-    border-radius: 20px;
+    border-radius: 2vh;
 }
 
 li {
@@ -126,8 +129,8 @@ li {
 .smallpin  {
     border: none;
     border-radius: 50%;
-    width: 15px;
-    height: 15px;
+    width: 1.4vh;
+    height: 1.4vh;
     margin: 5px;
     text-align: center;
     text-decoration: none;
@@ -138,8 +141,8 @@ li {
 .pin {
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 5vh;
+    height: 5vh;
     /* margin: 5px; */
     text-align: center;
     text-decoration: none;
