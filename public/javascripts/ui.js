@@ -5,6 +5,8 @@ const turnCounter = document.getElementById("turn");
 const HOST = location.origin.replace(/^http/, 'ws')
 const socket = new WebSocket(HOST);
 
+// import { ColorSet } from './ColorSet.js';
+
 class Timer {
     constructor() {
         this.time = 0;
