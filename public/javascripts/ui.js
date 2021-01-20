@@ -29,57 +29,76 @@ class Timer {
 }
 
 const timer = new Timer();
-let arr = new Array();
+let keySet = new ColorSet();
+let liveSet = new ColorSet();
 let colorsArray = new Array();
 let checkArray = new Array();
 
 // ------------------- HTML color pins in rows: adding and erasing -------------------------------
-function addColorDivToRow(color, row) {
+function addColorDivToField(color, field) {
     //@ts-ignore
     let colorDiv = document.createElement('div');
-    colorDiv.className = 'pin ' + color;
-    row.appendChild(colorDiv);
+    let fieldClass = field.className;
+    console.log('ADDING DIV TO FIELD: ' + fieldClass);
+    let divClass = '';
+    let add = '';
+
+    if (fieldClass === 'row') {
+        add = '';
+    } else if (fieldClass === 'square') {
+        add = 'small';
+    }
+
+    divClass = add + 'pin ' + color;
+    colorDiv.className = divClass;
+    field.appendChild(colorDiv);
 }
 
-function addAllColorDivsToRow(colors, row) {
-    colors.forEach(color => {
-        addColorDivToRow(color, row);
+function addAllColorDivsToField(colorSet, field) {
+    colorSet.getColors().forEach(color => {
+        addColorDivToField(color, field);
     });
 }
 
-function addAllColorRows(colors, rowList) {
-    for (let i = 0; i < colors.length; i++) {
-        addAllColorDivsToRow(colors[i], rowList[i]);
+function addAllFields(colorSetsArray, rowList) {
+    for (let i = 0; i < colorSetsArray.length; i++) {
+        addAllColorDivsToField(colorSetsArray[i], rowList[i]);
     }
 }
 
-function clearRow(row) {
-    row.innerHTML = "";
+function clearField(field) {
+    field.innerHTML = "";
 }
 
-function clearAllRows(rowList) {
-    rowList.forEach(row => {
-        clearRow(row);
+function clearAllFields(fieldList) {
+    fieldList.forEach(field => {
+        clearField(field);
     });
 }
 // -----------------------------------------------------------------------------------------------
 
 function updateBoard(arr, type) {
-    if(type == "colors") {
+    if(type === "colors") {
         colorsArray = arr;
         let rowContainer = document.querySelector('.rowList_container');
         let rowList = rowContainer.querySelectorAll('div.row');
         
-        clearAllRows(rowList);
-        addAllColorRows(colorsArray, rowList);
+        clearAllFields(rowList);
+        addAllFields(colorsArray, rowList);
 
         // let c = document.getElementById("colorPins")
         // c.innerHTML = "";
 
         // colorsArray.forEach((el) => c.innerHTML += el.join(", ") + "<br>");
 
-    } else {
+    } else if (type === "checks") {
         checkArray = arr;
+        let rowContainer = document.querySelector('.rowList_container');
+        let squareList = rowContainer.querySelectorAll('div.square');
+
+        clearAllFields(squareList);
+        addAllFields(checkArray, squareList);
+
         // let c = document.getElementById("checkPins")
         // c.innerHTML = "";
 
@@ -88,7 +107,9 @@ function updateBoard(arr, type) {
 }
 
 function updateTurn() {
+    // @ts-ignore
     turn++;
+    // @ts-ignore
     turnCounter.innerHTML = "Guess: " + turn.toString();
 }
 
@@ -97,49 +118,98 @@ function createTimer() {
 }
 
 function updateLive(color) {
-    if(arr.length < 4) arr.push(color);
-    updateLiveRow(arr);
-    target.innerHTML = arr.toString();
+    if(liveSet.getSize() < 4) {
+        liveSet.addColor(color);
+        console.log("COLOR ADDED TO LIVE SET: " + color);
+        updateLiveRow(liveSet);
+        target.innerHTML = liveSet.getColors().toString();
+    } else {
+        console.log("ACCESS DENIED: LIVE SET FULL");
+    }
     // console.log(arr.toString());
 }
 
 function updateLiveRow(colors) {
     let liveRow = document.getElementById('live_pins');
-    clearRow(liveRow);
-    addAllColorDivsToRow(colors, liveRow);
+    clearField(liveRow);
+    addAllColorDivsToField(colors, liveRow);
+    console.log("LIVE ROW UPDATED");
 }
 
 function clearLive() {
-    arr = [];
-    // console.log(arr);
+    liveSet.clearColors();
+    console.log("LIVE SET CLEAR");
     target.innerHTML = "Current pins: ";
-    updateLiveRow(arr);
+    updateLiveRow(liveSet);
+}
+
+function showKeyForSetter() {
+    let divState = document.getElementById('state');
+
+    let newDiv = document.createElement('div');
+    newDiv.className = 'row';
+    divState.appendChild(newDiv);
+
+    addAllColorDivsToField(keySet, newDiv);
 }
 
 function submit() {
     // @ts-ignore
     let msg = null;
+
+    // @ts-ignore
     if(playerType == "SET"){
+        // @ts-ignore
         if(turn == 0) {
-            // @ts-ignore
-            msg = Messages.O_SET_COLORS;
+            if (liveSet.checkReadyForSubmit()) {
+                // @ts-ignore
+                msg = Messages.O_SET_COLORS;
+                keySet = liveSet.copy();
+                showKeyForSetter();
+            } else {
+                handleIncompleteSubmit();
+                return;
+            }
         } else {
-            // @ts-ignore
-            msg = Messages.O_CHECK_COLORS;
-            checkArray.push(arr);
-            updateBoard(checkArray, "checks");
+            let lastColorSet = colorsArray[colorsArray.length-1];
+            if (liveSet.compareColors(lastColorSet.generateCheckSet(keySet))) {
+                // @ts-ignore
+                msg = Messages.O_CHECK_COLORS;
+                checkArray.push(liveSet.copy());
+                console.log("LIVE SET PUSHED TO CHECK ARRAY");
+                updateBoard(checkArray, "checks");
+            } else {
+                handleIncorrectCheckSubmit();
+                return;
+            }
         }
         updateTurn();
     } else {
-        // @ts-ignore
-        msg = Messages.O_GUESS_COLORS;
-        colorsArray.push(arr);
-        updateBoard(colorsArray, "colors");
+        if (liveSet.checkReadyForSubmit()) {
+            // @ts-ignore
+            msg = Messages.O_GUESS_COLORS;
+            colorsArray.push(liveSet.copy());
+            console.log("LIVE SET PUSHED TO COLORS ARRAY");
+            updateBoard(colorsArray, "colors");
+        } else {
+            handleIncompleteSubmit();
+            return;
+        }
+        
     }
-    msg.data = arr;
+    msg.data = liveSet.getColors();
     socket.send(JSON.stringify(msg));
     clearLive();
     disableButtons();
+    
+}
+
+function handleIncompleteSubmit() {
+    console.log('SUBMIT DENIED: COLOR SET IS INCOMPLETE');
+}
+
+function handleIncorrectCheckSubmit() {
+    console.log('SUBMIT DENIED: CHECK SET IS INCORRECT');
 }
 
 function sendTestSocket(info) {
