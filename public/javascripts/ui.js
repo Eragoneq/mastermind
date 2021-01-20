@@ -29,6 +29,7 @@ class Timer {
 }
 
 const timer = new Timer();
+let keySet = new ColorSet();
 let liveSet = new ColorSet();
 let colorsArray = new Array();
 let checkArray = new Array();
@@ -38,7 +39,7 @@ function addColorDivToField(color, field) {
     //@ts-ignore
     let colorDiv = document.createElement('div');
     let fieldClass = field.className;
-    console.log('ADDING TO FIELD: ' + fieldClass);
+    console.log('ADDING DIV TO FIELD: ' + fieldClass);
     let divClass = '';
     let add = '';
 
@@ -106,7 +107,9 @@ function updateBoard(arr, type) {
 }
 
 function updateTurn() {
+    // @ts-ignore
     turn++;
+    // @ts-ignore
     turnCounter.innerHTML = "Guess: " + turn.toString();
 }
 
@@ -117,7 +120,7 @@ function createTimer() {
 function updateLive(color) {
     if(liveSet.getSize() < 4) {
         liveSet.addColor(color);
-        console.log("COLOR ADDED TO LIVE SET");
+        console.log("COLOR ADDED TO LIVE SET: " + color);
         updateLiveRow(liveSet);
         target.innerHTML = liveSet.getColors().toString();
     } else {
@@ -140,32 +143,73 @@ function clearLive() {
     updateLiveRow(liveSet);
 }
 
+function showKeyForSetter() {
+    let divState = document.getElementById('state');
+
+    let newDiv = document.createElement('div');
+    newDiv.className = 'row';
+    divState.appendChild(newDiv);
+
+    addAllColorDivsToField(keySet, newDiv);
+}
+
 function submit() {
     // @ts-ignore
     let msg = null;
+
+    // @ts-ignore
     if(playerType == "SET"){
+        // @ts-ignore
         if(turn == 0) {
-            // @ts-ignore
-            msg = Messages.O_SET_COLORS;
+            if (liveSet.checkReadyForSubmit()) {
+                // @ts-ignore
+                msg = Messages.O_SET_COLORS;
+                keySet = liveSet.copy();
+                showKeyForSetter();
+            } else {
+                handleIncompleteSubmit();
+                return;
+            }
         } else {
-            // @ts-ignore
-            msg = Messages.O_CHECK_COLORS;
-            checkArray.push(liveSet.copy());
-            console.log("LIVE SET PUSHED TO CHECK ARRAY");
-            updateBoard(checkArray, "checks");
+            let lastColorSet = colorsArray[colorsArray.length-1];
+            if (liveSet.compareColors(lastColorSet.generateCheckSet(keySet))) {
+                // @ts-ignore
+                msg = Messages.O_CHECK_COLORS;
+                checkArray.push(liveSet.copy());
+                console.log("LIVE SET PUSHED TO CHECK ARRAY");
+                updateBoard(checkArray, "checks");
+            } else {
+                handleIncorrectCheckSubmit();
+                return;
+            }
         }
         updateTurn();
     } else {
-        // @ts-ignore
-        msg = Messages.O_GUESS_COLORS;
-        colorsArray.push(liveSet.copy());
-        console.log("LIVE SET PUSHED TO COLORS ARRAY");
-        updateBoard(colorsArray, "colors");
+        if (liveSet.checkReadyForSubmit()) {
+            // @ts-ignore
+            msg = Messages.O_GUESS_COLORS;
+            colorsArray.push(liveSet.copy());
+            console.log("LIVE SET PUSHED TO COLORS ARRAY");
+            updateBoard(colorsArray, "colors");
+        } else {
+            handleIncompleteSubmit();
+            return;
+        }
+        
     }
     msg.data = liveSet.getColors();
     socket.send(JSON.stringify(msg));
     clearLive();
     disableButtons();
+    
+}
+
+function handleIncompleteSubmit() {
+    console.log('SUBMIT DENIED: COLOR SET IS INCOMPLETE');
+}
+
+function handleIncorrectCheckSubmit() {
+    console.log('SUBMIT DENIED: CHECK SET IS INCORRECT');
 }
 
 function sendTestSocket(info) {

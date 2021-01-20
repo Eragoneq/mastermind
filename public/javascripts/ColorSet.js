@@ -14,6 +14,12 @@ class ColorSet {
         return new ColorSet(this.colors);
     }
 
+    // checks if the color set is ready for submission
+    checkReadyForSubmit() {
+        return this.size === 4;
+    }
+
+    // --------------- Getters and setters -----------------------
     // getter for main array
     getColors() {
         return this.colors;
@@ -38,8 +44,7 @@ class ColorSet {
             this.addColor(color);
         }
     }
-
-    // main array: adding and deleting
+    // -------------- Main array: adding and deleting ----------------------
     addColor(color) {
         if (this.size <= 3) {
             this.colors[this.size] = color;
@@ -62,7 +67,7 @@ class ColorSet {
         this.size = 0;
     }
 
-    // ------- helper methods for generateCheckSet() ------
+    // ------------------- Helper methods for generateCheckSet() --------------------
     // counts instances of color argument
     countColor(colorToCount) {
         let counter = 0;
@@ -87,8 +92,9 @@ class ColorSet {
     // Blue Yellow Green Red == Yellow Green Blue Red
     // Blue Yellow Green Red != Blue Yellow Green Purple
     compareColors(compSet) {
+        if (this.size != compSet.size) return false;
         for (const color of this.colors) {
-            if (this.countColor(color) !== compSet.countColor(color)) {
+            if (this.countColor(color) != compSet.countColor(color)) {
                 return false;
             }
         }
@@ -101,18 +107,27 @@ class ColorSet {
         let blackPins = 0;
         let checkSet = new ColorSet();
 
-        let color = '';
+        // check set finding algorithm
+        // https://stackoverflow.com/questions/2005723/how-to-count-the-white-correctly-in-mastermind-guessing-game-in-c/2005930
+        let sum = 0;
 
-        for(let i = 0; i < keySet.length; i++) {
-            color = keySet[i];
-            if (this.countColor(color) === keySet.countColor(color)) {
-                if (this.checkColorWithPosition(i) === keySet.checkColorWithPosition(i)) {
-                    blackPins += 1;
-                } else {
-                    whitePins += 1;
-                }
+        for (let i = 0; i < this.size; i++) {
+            if (this.getColor(i) === keySet.getColor(i)) {
+                blackPins += 1;
             }
         }
+
+        let allColors = ['red', 'yellow', 'green', 'blue', 'purple'];
+        let ans = [];
+        let guess = [];
+        let color = '';
+
+        for (let i = 0; i < allColors.length; i++) {
+            color = allColors[i];
+            sum += Math.min(this.countColor(color), keySet.countColor(color));
+        }
+
+        whitePins = sum - blackPins;
 
         for (let i = 0; i < whitePins; i++) checkSet.addColor('white');
         for (let i = 0; i < blackPins; i++) checkSet.addColor('black');
