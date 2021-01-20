@@ -6,6 +6,7 @@ socket.onmessage = (evt) => {
     let msgObj = JSON.parse(evt.data);
 
     switch (msgObj.type) {
+        // @ts-ignore
         case Messages.T_PLAYER_TYPE:
             createTimer();
             playerType = msgObj.data;
@@ -17,20 +18,26 @@ socket.onmessage = (evt) => {
             }
 
             break;
+        // @ts-ignore
         case Messages.T_NEXT_TURN:
+            let receivedColorArray = msgObj.data;
+            for (let i = 0; i < receivedColorArray.length; i++) {
+                receivedColorArray[i] = new ColorSet(receivedColorArray[i]);
+            }
+
             if(playerType == "GUESS") {
                 updateTurn();
                 openColors();
                 console.log("GUESSING NOW");
-                console.log(msgObj.data);
+                console.log(receivedColorArray);
                 if(turn !== 1) {
-                    updateBoard(msgObj.data, "checks")
+                    updateBoard(receivedColorArray, "checks")
                 }
             } else {
                 openChecks();
                 console.log("CHECKING NOW");
-                console.log(msgObj.data);
-                updateBoard(msgObj.data, "colors")
+                console.log(receivedColorArray);
+                updateBoard(receivedColorArray, "colors")
             }
             break;
         default:

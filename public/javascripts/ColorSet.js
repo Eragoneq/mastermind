@@ -1,10 +1,17 @@
 //@ts-check
 
 //Container class for an array of colors
-export class ColorSet {
-    constructor() {
-        this.colors = [];
-        this.size = 0;
+class ColorSet {
+    constructor(colors) {
+        if (arguments.length === 0) this.colors = [];
+        else this.colors = colors;
+
+        this.size = this.colors.length;
+    }
+
+    // makes a copy of the current object
+    copy() {
+        return new ColorSet(this.colors);
     }
 
     // getter for main array
@@ -19,6 +26,11 @@ export class ColorSet {
         }
     }
 
+    // getter for size
+    getSize() {
+        return this.size;
+    }
+
     // setter for main array
     setColors(colors) {
         this.clearColors();
@@ -29,7 +41,7 @@ export class ColorSet {
 
     // main array: adding and deleting
     addColor(color) {
-        if (this.size < 3) {
+        if (this.size <= 3) {
             this.colors[this.size] = color;
             this.size += 1;
         } else {
@@ -95,9 +107,9 @@ export class ColorSet {
             color = keySet[i];
             if (this.countColor(color) === keySet.countColor(color)) {
                 if (this.checkColorWithPosition(i) === keySet.checkColorWithPosition(i)) {
-                    whitePins += 1;
-                } else {
                     blackPins += 1;
+                } else {
+                    whitePins += 1;
                 }
             }
         }
