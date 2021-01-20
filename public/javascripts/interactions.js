@@ -1,5 +1,4 @@
 //@ts-check
-
 let playerType = "";
 let turn = 0;
 
