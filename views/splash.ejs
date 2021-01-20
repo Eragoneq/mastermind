@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mastermind - Lobby</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@500&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <link rel="stylesheet" href="stylesheets/splash.css" />
+  </head>
+  <body>
+    <main class="grid-container">
+      <div id="title">MASTERMIND</div>
+    <section id="rules" class="container">
+      <h1>RULES</h1>
+      Mastermind is a two players game. One player becomes the codemaker, the other the codebreaker.
+      The codemaker chooses a pattern of four code pegs (duplicates allowed).
+      The codebreaker tries to guess the pattern, in both order and color, within eight to twelve turns. 
+      Each guess is made by placing a row of code pegs on the decoding board. 
+      Once placed, the codemaker provides feedback by placing from zero to four key pegs in the small holes of the row with the guess. 
+      A colored or black key peg is placed for each code peg from the guess which is correct in both color and position. 
+      A white key peg indicates the existence of a correct color code peg placed in the wrong position.
+      Game continues until one of the two scenarios happen: codebreaker doesn't guess the correct code within 9 turns or codebreaker guesses the code.
+    </section>
+    <section id="statistics" class="container">
+      <h1>STATISTICS</h1>
+      <h3>Games played:</h3>
+      <%= gamesPlayed %>
+      <h3>Active games:</h3>
+      <%= gamesActive %>
+      <h3>Correctly guessed codes:</h3>
+      <%= gamesWon %>
+    </section>
+    <section id="settings" class="container">
+      <h1>SETTINGS</h1>
+        <button href="/game">PLAY</button>
+    </section>
+    </main>
+  </body>
+</html>

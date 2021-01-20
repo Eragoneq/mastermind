@@ -24,6 +24,10 @@ class Game {
     isFull() {
         return this.player1 !== null && this.player2 !== null ? true : false;
     }
+
+    endGame() {
+
+    }
 }
 
 class Color {

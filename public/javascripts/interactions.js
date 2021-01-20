@@ -6,6 +6,7 @@ socket.onmessage = (evt) => {
     let msgObj = JSON.parse(evt.data);
 
     switch (msgObj.type) {
+        // @ts-ignore
         case Messages.T_PLAYER_TYPE:
             createTimer();
             playerType = msgObj.data;
@@ -17,6 +18,7 @@ socket.onmessage = (evt) => {
             }
 
             break;
+        // @ts-ignore
         case Messages.T_NEXT_TURN:
             if(playerType == "GUESS") {
                 updateTurn();

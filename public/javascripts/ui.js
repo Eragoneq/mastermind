@@ -5,7 +5,7 @@ const turnCounter = document.getElementById("turn");
 const HOST = location.origin.replace(/^http/, 'ws')
 const socket = new WebSocket(HOST);
 
-// import { ColorSet } from './ColorSet.js';
+const cs = new ColorSet();
 
 class Timer {
     constructor() {
@@ -121,14 +121,17 @@ function submit() {
     let msg = null;
     if(playerType == "SET"){
         if(turn == 0) {
+            // @ts-ignore
             msg = Messages.O_SET_COLORS;
         } else {
+            // @ts-ignore
             msg = Messages.O_CHECK_COLORS;
             checkArray.push(arr);
             updateBoard(checkArray, "checks");
         }
         updateTurn();
     } else {
+        // @ts-ignore
         msg = Messages.O_GUESS_COLORS;
         colorsArray.push(arr);
         updateBoard(colorsArray, "colors");
@@ -140,6 +143,7 @@ function submit() {
 }
 
 function sendTestSocket(info) {
+    // @ts-ignore
     let msg = Messages.O_TEST;
     msg.data = info;
     socket.send(JSON.stringify(msg));
@@ -161,6 +165,7 @@ function openChecks() {
 
 function disableButtons() {
     document.querySelectorAll(".table_check,.table_info,.table_col").forEach((button) => {
+        // @ts-ignore
         button.style.display = "none";
     });
     document.getElementById("buttons").style.display = "none";

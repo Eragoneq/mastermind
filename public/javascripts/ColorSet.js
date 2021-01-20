@@ -1,7 +1,7 @@
 //@ts-check
 
 //Container class for an array of colors
-export class ColorSet {
+class ColorSet {
     constructor() {
         this.colors = [];
         this.size = 0;

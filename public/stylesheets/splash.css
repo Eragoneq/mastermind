@@ -1,0 +1,55 @@
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 0.25fr repeat(3, 1rf);
+    gap: 2vh 2vh;
+    grid-template-areas:
+      ". y y ."
+      ". x x2 ."
+      ". x x2 ."
+      ". x x3 .";
+  }
+
+
+#title {
+    grid-area: y;
+    font-size: 72px;
+    color: white;
+    text-align: center;
+    background-color: var(--accent2);
+    max-height: 2rem;
+    line-height: 2rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0px 4px 4px var(--accent2shadow);
+    border: none;
+    border-radius: 2vh;
+}
+#rules { 
+    grid-area: x; 
+    text-align: justify;
+}
+#statistics { grid-area: x2; }
+#settings { 
+    grid-area: x3; 
+    text-align: center;
+}
+
+button {
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 36px;
+    color: white;
+    background-color: var(--accent1);
+    min-height: 5.5vh;
+    /* line-height: 5.5vh; */
+    margin-top: 5vh;
+    padding: 1vh;
+    padding-left: 6vh;
+    padding-right: 6vh;
+    box-shadow: 0px 4px 4px var(--accent1shadow);
+    border: none;
+    border-radius: 4vh;
+}

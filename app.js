@@ -9,12 +9,15 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.static(__dirname + "/public"));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 app.use("/game", function (req, res) {
     res.sendFile("game.html", { root: "./public" });
 });
 
-app.use("/*", function (req, res) {
-    res.sendFile("splash.html", { root: "./public" });
+app.use("/", function (req, res) {
+    res.render("splash", {gamesPlayed: 1, gamesActive: 2, gamesWon: 3});
 });
 
 
