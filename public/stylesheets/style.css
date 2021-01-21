@@ -1,27 +1,38 @@
 :root {
   --color1: #ED4C4C;
+  --color1var: #c94343;
   --shadow1: #832D2D;
 
   --color2: #F0F356;
+  --color2var: #dcdf36;
   --shadow2: #B9BB45;
 
   --color3: #4A92D5;
+  --color3var: #3676b3;
   --shadow3: #326695;
 
   --color4: #6DDD5A;
+  --color4var: #55ac46;
   --shadow4: #4C993E;
 
 
   --color5: #A620FF;
+  --color5var: #841cc9;
   --shadow5: #6a17a1;
 
   --color6: #000000;
+  --color6var: #242424;
+
   --color7: #FFFFFF;
+  --color7var: #d4d4d4;
+  
   --shadow6: #CCCCCC;
 
   --color8: #5f5d5d;
+  --color8var: #383636;
 
   --color9: #1be9ab;
+  --color9var: #19c08e;
   --shadow9: #13966e;
 
   --bg: #6C5E54;
@@ -32,6 +43,7 @@
   --elements: #FFF7E7;
 
   --accent1: #83A95C;
+  --accent1var: #648d3b;
   --accent1shadow: #546b3c;
 
   --accent2: #944E6C;
@@ -43,7 +55,8 @@ h1 {
 }
 
 body {
-  padding: 50px;
+  margin: 0;
+  /* padding: 50px; */
   font-family: 'Cabin', sans-serif;
   background-color: var(--bg);
 }
@@ -56,4 +69,30 @@ section {
   border-radius: 4vh;
   padding: 3vh;
 }
+
+#courtain {
+  display: none;
+  position: absolute;
+  align-items: center;
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-size: 72px;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+
+@media (max-height: 700px) {
+  .row {
+    display: none;
+  }
+
+  #courtain {
+    display: grid;
+  }
+}
+
 

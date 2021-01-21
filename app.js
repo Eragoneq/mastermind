@@ -64,7 +64,14 @@ wss.on("connection", function (ws) {
     }
 
     ws.onmessage = (event) => {
-        let msgObj = JSON.parse(event.data);
+        let msgObj;
+        try {
+            msgObj = JSON.parse(event.data);
+        } catch (error) {
+            console.log("RECEIVED INVALID DATA");
+            return;
+        }
+        
         let game = activePlayers[event.target.id];
     
         switch (msgObj.type) {
@@ -162,7 +169,7 @@ function endGameJSONSend(winner, loser) {
     let winMessage = msg.O_GAME_WON;
     let loseMessage = msg.O_GAME_LOST;
 
-    winMessage.data = "Setter wins!";
+    winMessage.data = "You win!";
     loseMessage.data = "You lose!";
 
     winner.send(JSON.stringify(winMessage));

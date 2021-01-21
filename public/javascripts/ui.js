@@ -82,9 +82,12 @@ function updateBoard(arr, type) {
         colorsArray = arr;
         let rowContainer = document.querySelector('.rowList_container');
         let rowList = rowContainer.querySelectorAll('div.row');
-        
-        clearAllFields(rowList);
-        addAllFields(colorsArray, rowList);
+
+        let elArray = Array.from(rowList);
+        elArray.reverse();
+
+        clearAllFields(elArray);
+        addAllFields(colorsArray, elArray);
 
         // let c = document.getElementById("colorPins")
         // c.innerHTML = "";
@@ -96,8 +99,11 @@ function updateBoard(arr, type) {
         let rowContainer = document.querySelector('.rowList_container');
         let squareList = rowContainer.querySelectorAll('div.square');
 
-        clearAllFields(squareList);
-        addAllFields(checkArray, squareList);
+        let elArray = Array.from(squareList);
+        elArray.reverse();
+
+        clearAllFields(elArray);
+        addAllFields(checkArray, elArray);
 
         // let c = document.getElementById("checkPins")
         // c.innerHTML = "";
@@ -113,6 +119,10 @@ function updateTurn() {
     turnCounter.innerHTML = "Guess: " + turn.toString();
 }
 
+function updateInfo(str) {
+    target.innerHTML = str;
+}
+
 function createTimer() {
     timer.startTimer(document.getElementById("time"));
 }
@@ -122,7 +132,7 @@ function updateLive(color) {
         liveSet.addColor(color);
         console.log("COLOR ADDED TO LIVE SET: " + color);
         updateLiveRow(liveSet);
-        target.innerHTML = liveSet.getColors().toString();
+        // target.innerHTML = liveSet.getColors().toString();
     } else {
         console.log("ACCESS DENIED: LIVE SET FULL");
     }
@@ -139,18 +149,13 @@ function updateLiveRow(colors) {
 function clearLive() {
     liveSet.clearColors();
     console.log("LIVE SET CLEAR");
-    target.innerHTML = "Current pins: ";
+    // target.innerHTML = "Current pins: ";
     updateLiveRow(liveSet);
 }
 
 function showKeyForSetter() {
-    let divState = document.getElementById('state');
-
-    let newDiv = document.createElement('div');
-    newDiv.className = 'row';
-    divState.appendChild(newDiv);
-
-    addAllColorDivsToField(keySet, newDiv);
+    let div = document.getElementById('set_pins');
+    addAllColorDivsToField(keySet, div);
 }
 
 function endGame() {
@@ -159,7 +164,6 @@ function endGame() {
 }
 
 function submit() {
-    // @ts-ignore
     let msg = null;
 
     // @ts-ignore
@@ -202,6 +206,7 @@ function submit() {
         }
         
     }
+    updateInfo("It's opponents turn.");
     msg.data = liveSet.getColors();
     socket.send(JSON.stringify(msg));
     clearLive();

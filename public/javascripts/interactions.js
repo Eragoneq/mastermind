@@ -13,8 +13,10 @@ socket.onmessage = (evt) => {
 
             if(playerType == "SET") {
                 openColors();
-                target.innerHTML = "Secret pins: ";
+                updateInfo("You're the codemaker, set your colors!");
                 console.log("SETTING COLORS");
+            } else {
+                updateInfo("Waiting for opponent to set colors...");
             }
 
             break;
@@ -25,6 +27,8 @@ socket.onmessage = (evt) => {
                 // @ts-ignore
                 receivedColorArray[i] = new ColorSet(receivedColorArray[i]);
             }
+
+            updateInfo("It's your turn!");
 
             if(playerType == "GUESS") {
                 updateTurn();
@@ -44,11 +48,15 @@ socket.onmessage = (evt) => {
         // @ts-ignore
         case Messages.T_GAME_WON:
             endGame();
+            updateInfo("You won!");
             alert(msgObj.data);
+            break;
         // @ts-ignore
         case Messages.T_GAME_LOST:
             endGame();
+            updateInfo("You lost!");
             alert(msgObj.data);
+            break;
         default:
             console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
             break;
