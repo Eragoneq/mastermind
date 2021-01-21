@@ -27,7 +27,9 @@ class Timer {
 }
 
 const timer = new Timer();
+// @ts-ignore
 let keySet = new ColorSet();
+// @ts-ignore
 let liveSet = new ColorSet();
 let colorsArray = new Array();
 let checkArray = new Array();

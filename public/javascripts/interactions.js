@@ -22,6 +22,7 @@ socket.onmessage = (evt) => {
         case Messages.T_NEXT_TURN:
             let receivedColorArray = msgObj.data;
             for (let i = 0; i < receivedColorArray.length; i++) {
+                // @ts-ignore
                 receivedColorArray[i] = new ColorSet(receivedColorArray[i]);
             }
 
