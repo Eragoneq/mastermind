@@ -42,12 +42,12 @@ socket.onmessage = (evt) => {
             break;
         // @ts-ignore
         case Messages.T_GAME_WON:
-            alert(msgObj.data);
             endGame();
+            alert(msgObj.data);
         // @ts-ignore
         case Messages.T_GAME_LOST:
-            alert(msgObj.data);
             endGame();
+            alert(msgObj.data);
         default:
             console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
             break;
