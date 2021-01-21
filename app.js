@@ -2,11 +2,14 @@ const express = require("express");
 const http = require("http");
 const websocket = require("ws");
 const Game = require("./game");
+const GameStats = require("./stats.js");
 
 const port = process.env.PORT || process.argv[2] || 3000;
 const app = express();
 
 const server = http.createServer(app);
+
+let statistics = new GameStats();
 
 app.use(express.static(__dirname + "/public"));
 app.set('views', __dirname + '/views');
@@ -17,20 +20,13 @@ app.use("/game", function (req, res) {
 });
 
 app.use("/", function (req, res) {
-    res.render("splash", {gamesPlayed: 1, gamesActive: 2, gamesWon: 3});
+    res.render("splash", {gamesPlayed: statistics.gamesPlayed, gamesActive: statistics.gamesActive, gamesWon: statistics.gamesWon});
 });
 
 
 const wss = new websocket.Server({ server });
 const msg = require("./public/javascripts/messages");
-
-class GameStats {
-    constructor() {
-        this.gamesPlayed = 0;
-    }
-};
-
-let statistics = new GameStats();
+const { stat } = require("fs");
 
 let newGame = new Game(statistics.gamesPlayed++);
 let connectionId = 0;
@@ -59,6 +55,9 @@ wss.on("connection", function (ws) {
 
         newGame.state = "SETTING";
 
+        statistics.gamesActiveAdd();
+        console.log("ACTIVE GAME ADDED");
+
         newGame = new Game(statistics.gamesPlayed++);   // Check if the game is full, create new one if that is the case
         console.log("Game created with ID " + statistics.gamesPlayed);
     }
@@ -66,6 +65,8 @@ wss.on("connection", function (ws) {
     ws.onmessage = (event) => {
         let msgObj = JSON.parse(event.data);
         let game = activePlayers[event.target.id];
+        // console.log("GAME STATE: ")
+        // console.log(game.state);
 
         switch (msgObj.type) {
             case msg.T_TEST:
@@ -100,10 +101,14 @@ wss.on("connection", function (ws) {
                     game.checks.push(msgObj.data);
 
                     if (checkGameWon(msgObj.data)) {
-                        endGameJSONSend(game.player2, game.player1);
+                        statistics.gamesActiveRemove();
+                        game.setStatus('CLOSED');
+                        endGame(game.player2, game.player1, true);
                         return;
                     } else if (game.turn == 9) {
-                        endGameJSONSend(game.player1, game.player2);
+                        statistics.gamesActiveRemove();
+                        game.setStatus('CLOSED');
+                        endGame(game.player1, game.player2);
                         return;
                     }
 
@@ -124,21 +129,27 @@ wss.on("connection", function (ws) {
 
     ws.onclose = (event) => {
         console.log("Lost connection to client with ID " + event.target.id);
+
         let game = activePlayers[event.target.id];
         delete activePlayers[event.target.id];
-        if(game.state == "PREP") {
+
+        if (game.state == "PREP") {
             game.player1 = null;
             return;
-        }
-        let winner = event.target === game.player1 ? game.player2 : game.player1;
+        } else if (game.state == "SETTING") {
+            let winner = event.target === game.player1 ? game.player2 : game.player1;
 
-        let winMessage = msg.O_GAME_WON;
-        winMessage.data = "Your opponent disconnected, you win!";
+            let winMessage = msg.O_GAME_WON;
+            winMessage.data = "Your opponent disconnected, you win!";
 
-        winner.send(JSON.stringify(winMessage));
+            game.setStatus('CLOSED');
+            statistics.gamesActiveRemove();
 
-        console.log("Current players:");
-        console.log(Object.keys(activePlayers));
+            winner.send(JSON.stringify(winMessage));
+
+            console.log("Current players:");
+            console.log(Object.keys(activePlayers));
+        } // other case is game.state = "CLOSED", which means one player won
     };
 });
 
@@ -149,11 +160,19 @@ function checkGameWon(arr) {
     return false;
 }
 
+function endGame(winner, loser, addGamesWon = false) {
+    if (addGamesWon) {
+        statistics.gamesWonAdd();
+        console.log("GAME WON ADDED");
+    }
+    endGameJSONSend(winner, loser);
+}
+
 function endGameJSONSend(winner, loser) {
     let winMessage = msg.O_GAME_WON;
     let loseMessage = msg.O_GAME_LOST;
 
-    winMessage.data = "Setter wins!";
+    winMessage.data = "You win!";
     loseMessage.data = "You lose!";
 
     winner.send(JSON.stringify(winMessage));
