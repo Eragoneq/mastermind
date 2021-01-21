@@ -5,6 +5,8 @@ const turnCounter = document.getElementById("turn");
 const subButton = document.getElementById("submit");
 const HOST = location.origin.replace(/^http/, 'ws')
 const socket = new WebSocket(HOST);
+const clickSound = new Audio("../click.wav");
+clickSound.volume = 0.1;
 
 class Timer {
     constructor() {
@@ -266,6 +268,7 @@ document.querySelectorAll('.colors,.checks').forEach((button) => {
     button.addEventListener("click", () => {
         updateLive(button.innerHTML);
         removeErrorAnimation();
+        clickSound.play();
     });
 });
 
@@ -273,12 +276,14 @@ document.querySelectorAll('.clear').forEach((button) => {
     button.addEventListener("click", () => {
         clearLive();
         removeErrorAnimation();
+        clickSound.play();
     });
 });
 
 document.querySelectorAll('.submit').forEach((button) => {
     button.addEventListener("click", () => {
         submit();
+        clickSound.play();
     });
 });
 

@@ -16,6 +16,8 @@ To start normally:
 npm run start
 ```
 
+On it's own it will start the server on `localhost:3000`, but any other port can be specified as an argument. 
+
 ---
 
 To run automatically refreshing server use this command:

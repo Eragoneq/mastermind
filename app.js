@@ -88,7 +88,7 @@ wss.on("connection", function (ws) {
                 }
                 break;
             case msg.T_GUESS_COLORS:
-                if(game.turn <= 9) {
+                if(game.turn <= 8) {
                     // Add the guess colors (array) to array of guesses
                     game.guesses.push(msgObj.data);
     
@@ -102,7 +102,7 @@ wss.on("connection", function (ws) {
             case msg.T_CHECK_COLORS:
                 console.log("CHECK WITH TURN: ");
                 console.log(game.turn);
-                if(game.turn <= 9) {
+                if(game.turn <= 8) {
                     // Add the check colors (array) to array of guesses
                     game.checks.push(msgObj.data);
     
