@@ -22,6 +22,7 @@ socket.onmessage = (evt) => {
         case Messages.T_NEXT_TURN:
             let receivedColorArray = msgObj.data;
             for (let i = 0; i < receivedColorArray.length; i++) {
+                // @ts-ignore
                 receivedColorArray[i] = new ColorSet(receivedColorArray[i]);
             }
 
@@ -40,6 +41,14 @@ socket.onmessage = (evt) => {
                 updateBoard(receivedColorArray, "colors")
             }
             break;
+        // @ts-ignore
+        case Messages.T_GAME_WON:
+            endGame();
+            alert(msgObj.data);
+        // @ts-ignore
+        case Messages.T_GAME_LOST:
+            endGame();
+            alert(msgObj.data);
         default:
             console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
             break;

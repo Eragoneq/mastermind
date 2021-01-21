@@ -5,8 +5,6 @@ const turnCounter = document.getElementById("turn");
 const HOST = location.origin.replace(/^http/, 'ws')
 const socket = new WebSocket(HOST);
 
-const cs = new ColorSet();
-
 class Timer {
     constructor() {
         this.time = 0;
@@ -29,7 +27,9 @@ class Timer {
 }
 
 const timer = new Timer();
+// @ts-ignore
 let keySet = new ColorSet();
+// @ts-ignore
 let liveSet = new ColorSet();
 let colorsArray = new Array();
 let checkArray = new Array();
@@ -151,6 +151,11 @@ function showKeyForSetter() {
     divState.appendChild(newDiv);
 
     addAllColorDivsToField(keySet, newDiv);
+}
+
+function endGame() {
+    disableButtons();
+    timer.stopTimer();
 }
 
 function submit() {

@@ -6,6 +6,12 @@
         data: ""
     }
 
+    exports.T_GAME_LOST = "GAME-LOST";
+    exports.O_GAME_LOST = {
+        type: exports.T_GAME_LOST,
+        data: ""
+    }
+
     exports.T_GAME_ABORTED = "GAME-ABORTED";
     exports.O_GAME_ABORTED = {
         type: exports.T_GAME_ABORTED,
