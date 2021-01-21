@@ -56,10 +56,4 @@ class Game {
     }
 }
 
-class Color {
-    constructor() {
-        this.id = a;
-    }
-}
-
 module.exports = Game;

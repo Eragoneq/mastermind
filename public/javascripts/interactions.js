@@ -14,7 +14,7 @@ socket.onmessage = (evt) => {
             if(playerType == "SET") {
                 openColors();
                 updateInfo("You're the codemaker, set your colors!");
-                console.log("SETTING COLORS");
+                // console.log("SETTING COLORS");
             } else {
                 updateInfo("Waiting for opponent to set colors...");
             }
@@ -33,15 +33,15 @@ socket.onmessage = (evt) => {
             if(playerType == "GUESS") {
                 updateTurn();
                 openColors();
-                console.log("GUESSING NOW");
-                console.log(receivedColorArray);
+                // console.log("GUESSING NOW");
+                // console.log(receivedColorArray);
                 if(turn !== 1) {
                     updateBoard(receivedColorArray, "checks")
                 }
             } else {
                 openChecks();
-                console.log("CHECKING NOW");
-                console.log(receivedColorArray);
+                // console.log("CHECKING NOW");
+                // console.log(receivedColorArray);
                 updateBoard(receivedColorArray, "colors")
             }
             break;
@@ -49,16 +49,18 @@ socket.onmessage = (evt) => {
         case Messages.T_GAME_WON:
             endGame();
             updateInfo("You won!");
+            showKey(new ColorSet(msgObj.finalset));
             alert(msgObj.data);
             break;
         // @ts-ignore
         case Messages.T_GAME_LOST:
             endGame();
             updateInfo("You lost!");
+            showKey(new ColorSet(msgObj.finalset));
             alert(msgObj.data);
             break;
         default:
-            console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
+            // console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
             break;
     }
 

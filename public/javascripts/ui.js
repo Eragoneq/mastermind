@@ -2,6 +2,7 @@
 const target = document.getElementById("info");
 const board = document.getElementById("board");
 const turnCounter = document.getElementById("turn");
+const subButton = document.getElementById("submit");
 const HOST = location.origin.replace(/^http/, 'ws')
 const socket = new WebSocket(HOST);
 
@@ -39,7 +40,7 @@ function addColorDivToField(color, field) {
     //@ts-ignore
     let colorDiv = document.createElement('div');
     let fieldClass = field.className;
-    console.log('ADDING DIV TO FIELD: ' + fieldClass);
+    // console.log('ADDING DIV TO FIELD: ' + fieldClass);
     let divClass = '';
     let add = '';
 
@@ -130,11 +131,11 @@ function createTimer() {
 function updateLive(color) {
     if(liveSet.getSize() < 4) {
         liveSet.addColor(color);
-        console.log("COLOR ADDED TO LIVE SET: " + color);
+        // console.log("COLOR ADDED TO LIVE SET: " + color);
         updateLiveRow(liveSet);
         // target.innerHTML = liveSet.getColors().toString();
     } else {
-        console.log("ACCESS DENIED: LIVE SET FULL");
+        // console.log("ACCESS DENIED: LIVE SET FULL");
     }
     // console.log(arr.toString());
 }
@@ -143,19 +144,28 @@ function updateLiveRow(colors) {
     let liveRow = document.getElementById('live_pins');
     clearField(liveRow);
     addAllColorDivsToField(colors, liveRow);
-    console.log("LIVE ROW UPDATED");
+    // console.log("LIVE ROW UPDATED");
 }
 
 function clearLive() {
     liveSet.clearColors();
-    console.log("LIVE SET CLEAR");
+    // console.log("LIVE SET CLEAR");
     // target.innerHTML = "Current pins: ";
     updateLiveRow(liveSet);
 }
 
-function showKeyForSetter() {
+function showKey(pinSet = keySet) {
     let div = document.getElementById('set_pins');
-    addAllColorDivsToField(keySet, div);
+    div.querySelectorAll('*').forEach(n => n.remove());
+    addAllColorDivsToField(pinSet, div);
+}
+
+function addErrorAnimation() {
+    subButton.classList.add("error");
+}
+
+function removeErrorAnimation() {
+    subButton.classList.remove("error");
 }
 
 function endGame() {
@@ -174,7 +184,7 @@ function submit() {
                 // @ts-ignore
                 msg = Messages.O_SET_COLORS;
                 keySet = liveSet.copy();
-                showKeyForSetter();
+                showKey();
             } else {
                 handleIncompleteSubmit();
                 return;
@@ -185,7 +195,7 @@ function submit() {
                 // @ts-ignore
                 msg = Messages.O_CHECK_COLORS;
                 checkArray.push(liveSet.copy());
-                console.log("LIVE SET PUSHED TO CHECK ARRAY");
+                // console.log("LIVE SET PUSHED TO CHECK ARRAY");
                 updateBoard(checkArray, "checks");
             } else {
                 handleIncorrectCheckSubmit();
@@ -198,7 +208,7 @@ function submit() {
             // @ts-ignore
             msg = Messages.O_GUESS_COLORS;
             colorsArray.push(liveSet.copy());
-            console.log("LIVE SET PUSHED TO COLORS ARRAY");
+            // console.log("LIVE SET PUSHED TO COLORS ARRAY");
             updateBoard(colorsArray, "colors");
         } else {
             handleIncompleteSubmit();
@@ -215,11 +225,12 @@ function submit() {
 }
 
 function handleIncompleteSubmit() {
-    console.log('SUBMIT DENIED: COLOR SET IS INCOMPLETE');
+    // console.log('SUBMIT DENIED: COLOR SET IS INCOMPLETE');
 }
 
 function handleIncorrectCheckSubmit() {
-    console.log('SUBMIT DENIED: CHECK SET IS INCORRECT');
+    addErrorAnimation();
+    // console.log('SUBMIT DENIED: CHECK SET IS INCORRECT');
 }
 
 function sendTestSocket(info) {
@@ -254,12 +265,14 @@ function disableButtons() {
 document.querySelectorAll('.colors,.checks').forEach((button) => {
     button.addEventListener("click", () => {
         updateLive(button.innerHTML);
+        removeErrorAnimation();
     });
 });
 
 document.querySelectorAll('.clear').forEach((button) => {
     button.addEventListener("click", () => {
         clearLive();
+        removeErrorAnimation();
     });
 });
 

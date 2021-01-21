@@ -240,3 +240,27 @@ button.submit:active {
 .submit::before {
     content: url("../images/done.svg");
 }
+
+button.error:hover {
+    animation: error 0.25s;
+}
+
+@keyframes error {
+    0% {}
+    25% {
+        background-color: var(--color1var);
+        transform: translateX(4px);
+    }
+    50% { 
+        background-color: var(--color1var);
+        box-shadow: 0px 4px 4px var(--shadow1);
+        
+    }
+    75% {
+        background-color: var(--color1var);
+        transform: translateX(-4px);
+    }
+    100% {
+
+    }
+}

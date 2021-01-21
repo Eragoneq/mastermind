@@ -26,7 +26,6 @@ app.use("/", function (req, res) {
 
 const wss = new websocket.Server({ server });
 const msg = require("./public/javascripts/messages");
-const { stat } = require("fs");
 
 let newGame = new Game(statistics.gamesPlayed++);
 let connectionId = 0;
@@ -110,12 +109,12 @@ wss.on("connection", function (ws) {
                     if (checkGameWon(msgObj.data)) {
                         statistics.gamesActiveRemove();
                         game.setStatus('CLOSED');
-                        endGame(game.player2, game.player1, true);
+                        endGame(game.player2, game.player1, game, true);
                         return;
                     } else if (game.turn == 9) {
                         statistics.gamesActiveRemove();
                         game.setStatus('CLOSED');
-                        endGame(game.player1, game.player2);
+                        endGame(game.player1, game.player2, game);
                         return;
                     }
     
@@ -148,6 +147,8 @@ wss.on("connection", function (ws) {
 
             let winMessage = msg.O_GAME_WON;
             winMessage.data = "Your opponent disconnected, you win!";
+            // Check if the setter got the colors set first, if not then send empty array
+            winMessage.finalset = game.set_color === null ? [] : game.set_color;
 
             game.setStatus('CLOSED');
             statistics.gamesActiveRemove();
@@ -161,6 +162,7 @@ wss.on("connection", function (ws) {
 
 });
 
+// Heroku cheat to make it not disconnect players within 55 seconds
 setInterval(() => {
     let ping = msg.O_TEST;
     ping.data = "PING";
@@ -176,20 +178,22 @@ function checkGameWon(arr) {
     return false;
 }
 
-function endGame(winner, loser, addGamesWon = false) {
+function endGame(winner, loser, game, addGamesWon = false) {
     if (addGamesWon) {
         statistics.gamesWonAdd();
         console.log("GAME WON ADDED");
     }
-    endGameJSONSend(winner, loser);
+    endGameJSONSend(winner, loser, game);
 }
 
-function endGameJSONSend(winner, loser) {
+function endGameJSONSend(winner, loser, game) {
     let winMessage = msg.O_GAME_WON;
     let loseMessage = msg.O_GAME_LOST;
 
     winMessage.data = "You win!";
     loseMessage.data = "You lose!";
+    winMessage.finalset = game.set_color;
+    loseMessage.finalset = game.set_color;
 
     winner.send(JSON.stringify(winMessage));
     loser.send(JSON.stringify(loseMessage));
