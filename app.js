@@ -76,7 +76,7 @@ wss.on("connection", function (ws) {
                 if(game.set_color === null || game.state === "SETTING") {
                     // Set the colors of the game
                     game.set_color = msgObj.data;
-
+    
                     let resp = msg.O_NEXT_TURN;
                     game.player2.send(JSON.stringify(resp));
                 }
@@ -85,11 +85,11 @@ wss.on("connection", function (ws) {
                 if(game.turn <= 9) {
                     // Add the guess colors (array) to array of guesses
                     game.guesses.push(msgObj.data);
-
+    
                     let resp = msg.O_NEXT_TURN; // Send client info about new turn
                     resp.data = game.guesses;   // Send information about the check pins that opponent set
                     game.player1.send(JSON.stringify(resp));
-
+    
                     console.log(game.guesses);
                 } 
                 break;
@@ -99,7 +99,7 @@ wss.on("connection", function (ws) {
                 if(game.turn <= 9) {
                     // Add the check colors (array) to array of guesses
                     game.checks.push(msgObj.data);
-
+    
                     if (checkGameWon(msgObj.data)) {
                         statistics.gamesActiveRemove();
                         game.setStatus('CLOSED');
@@ -111,12 +111,12 @@ wss.on("connection", function (ws) {
                         endGame(game.player1, game.player2);
                         return;
                     }
-
+    
                     game.turn++;                // Update turn count
                     let resp = msg.O_NEXT_TURN; // Send client info about new turn
                     resp.data = game.checks;    // Send client info about the guessed color pins
                     game.player2.send(JSON.stringify(resp));
-
+    
                     console.log(game.checks);
                 }
                 break;
@@ -126,7 +126,7 @@ wss.on("connection", function (ws) {
         }
         
     };
-
+    
     ws.onclose = (event) => {
         console.log("Lost connection to client with ID " + event.target.id);
 
@@ -151,7 +151,16 @@ wss.on("connection", function (ws) {
             console.log(Object.keys(activePlayers));
         } // other case is game.state = "CLOSED", which means one player won
     };
+
 });
+
+setInterval(() => {
+    let ping = msg.O_TEST;
+    ping.data = "PING";
+    wss.clients.forEach((ws) => {
+        ws.send(JSON.stringify(ping));
+    });
+}, 30000);
 
 function checkGameWon(arr) {
     if (arr.length === 4 && arr.filter(x => x==="black").length === 4) return true;
