@@ -62,7 +62,14 @@ wss.on("connection", function (ws) {
     }
 
     ws.onmessage = (event) => {
-        let msgObj = JSON.parse(event.data);
+        let msgObj;
+        try {
+            msgObj = JSON.parse(event.data);
+        } catch (error) {
+            console.log("RECEIVED INVALID DATA");
+            return;
+        }
+        
         let game = activePlayers[event.target.id];
         // console.log("GAME STATE: ")
         // console.log(game.state);

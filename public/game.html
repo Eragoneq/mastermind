@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="stylesheets/game.css" />
   </head>
   <body>
+    <div id="courtain">Your resolution is too small, please try to enlarge the browser</div>
     <main class="grid-container">
       <section id="board" class="container">
         <!-- <div id="colorPins"></div>
         <br>
         <div id="checkPins"></div> -->
-        <div id="live_pins" class="row">
+        <div id="set_pins" class="row">
           <!-- <div class="pin red"></div>
           <div class="pin blue"></div>
           <div class="pin purple"></div>
@@ -53,40 +54,38 @@
           <li><div class="row"></div><div class="square"></div></li>
           <li><div class="row"></div><div class="square"></div></li>
           <li><div class="row"></div><div class="square"></div></li>
-          <li><div class="row"></div><div class="square"></div></li>
+          <!-- <li><div class="row"></div><div class="square"></div></li> -->
         </ul>
       </section>
       <section id="state" class="container">
         <div id="rules">
-          <p>
-            Mastermind or Master Mind is a code-breaking game for two players. 
-            The modern game with pegs was invented in 1970 by Mordecai Meirowitz, an Israeli postmaster 
-            and telecommunications expert.
-          </p>
-          
+          <h1>How to play:</h1>
           <p>
             The codebreaker tries to guess the pattern, in both order and color, within ten turns.
             Each guess is made by placing a row of code pegs on the decoding board. 
           </p>
-
           <p>
-            Once placed, the codemaker provides feedback by placing from zero to four key pegs in the small holes 
-            of the row with the guess.
+            Once placed, the codemaker provides feedback by placing from zero to four key pegs next to the guess.
           </p>
-
           <p>
             A colored or black key peg is placed for each code peg from the guess which 
             is correct in both color and position. A white key peg indicates the existence of a 
             correct color code peg placed in the wrong position.
           </p>
-          
         </div>
-        <h3 id="info"></h3>
-        <h3 id="turn"></h3>
+        <hr>
         <h3 id="time"></h3>
+        <h3 id="turn"></h3>
+        <h3 id="info">Waiting for your opponent!</h3>
+        <div id="live_pins" class="row">
+          <!-- <div class="pin red"></div>
+          <div class="pin blue"></div>
+          <div class="pin purple"></div>
+          <div class="pin purple"></div> -->
+        </div>
       </section>
       <section id="controls">
-        <h4>Buttons</h4>
+        <h3>Pins</h3>
         <div id="buttons" class="rowList_container">
           <div id="row1" class="row">
             <div class="table_col"><button class="pin colors red">red</button></div>

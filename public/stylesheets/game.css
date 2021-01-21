@@ -1,6 +1,7 @@
 
 .grid-container {
     display: grid;
+    padding: 1vh 1vh;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px 10px;
@@ -68,6 +69,10 @@
     border-radius: 2vh;
 }
 
+h3 {
+    text-align: center;
+}
+
 li {
     display: flex;
     margin-bottom: 10px;
@@ -107,9 +112,27 @@ li {
     box-shadow: 0px 4px 4px var(--shadow1);
 }
 
+button.red:hover {
+    background-color: var(--color1var);
+}
+
+button.red:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow1);
+}
+
 .yellow {
     background-color: var(--color2);
     box-shadow: 0px 4px 4px var(--shadow2);
+}
+
+button.yellow:hover {
+    background-color: var(--color2var);
+}
+
+button.yellow:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow2);
 }
 
 .blue {
@@ -117,9 +140,27 @@ li {
     box-shadow: 0px 4px 4px var(--shadow3);
 }
 
+button.blue:hover {
+    background-color: var(--color3var);
+}
+
+button.blue:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow3);
+}
+
 .green {
     background-color: var(--color4);
     box-shadow: 0px 4px 4px var(--shadow4);
+}
+
+button.green:hover {
+    background-color: var(--color4var);
+}
+
+button.green:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow4);
 }
 
 .purple {
@@ -127,9 +168,27 @@ li {
     box-shadow: 0px 4px 4px var(--shadow5);
 }
 
+button.purple:hover {
+    background-color: var(--color5var);
+}
+
+button.purple:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow5);
+}
+
 .black {
     background-color: var(--color6);
     box-shadow: 0px 4px 4px var(--shadow6);
+}
+
+button.black:hover {
+    background-color: var(--color6var);
+}
+
+button.black:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow6);
 }
 
 .white {
@@ -137,18 +196,45 @@ li {
     box-shadow: 0px 4px 4px var(--shadow6);
 }
 
+button.white:hover {
+    background-color: var(--color7var);
+}
+
+button.white:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow6);
+}
+
 .clear {
     background-color: var(--color8);
     box-shadow: 0px 4px 4px var(--shadow6);
 }
 
-.clear::before {
+button.clear:hover {
+    background-color: var(--color8var);
+}
+
+button.clear:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow6);
+}
+
+.clear::after {
     content: url("../images/delete.svg");
 }
 
 .submit {
     background-color: var(--color9);
     box-shadow: 0px 4px 4px var(--shadow9);
+}
+
+button.submit:hover {
+    background-color: var(--color9var);
+}
+
+button.submit:active {
+    transform: translateY(3px);
+    box-shadow: 0px 1px 1px var(--shadow9);
 }
 
 .submit::before {
