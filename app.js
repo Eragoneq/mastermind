@@ -26,7 +26,6 @@ app.use("/", function (req, res) {
 
 const wss = new websocket.Server({ server });
 const msg = require("./public/javascripts/messages");
-const { stat } = require("fs");
 
 let newGame = new Game(statistics.gamesPlayed++);
 let connectionId = 0;
