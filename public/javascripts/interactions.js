@@ -40,6 +40,14 @@ socket.onmessage = (evt) => {
                 updateBoard(receivedColorArray, "colors")
             }
             break;
+        // @ts-ignore
+        case Messages.T_GAME_WON:
+            alert(msgObj.data);
+            endGame();
+        // @ts-ignore
+        case Messages.T_GAME_LOST:
+            alert(msgObj.data);
+            endGame();
         default:
             console.log("[SOCKET] " + msgObj.type + "\n[DATA] " + msgObj.data);
             break;

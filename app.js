@@ -81,7 +81,7 @@ wss.on("connection", function (ws) {
                 }
                 break;
             case msg.T_GUESS_COLORS:
-                if(game.turn < 9) {
+                if(game.turn <= 9) {
                     // Add the guess colors (array) to array of guesses
                     game.guesses.push(msgObj.data);
 
@@ -90,12 +90,22 @@ wss.on("connection", function (ws) {
                     game.player1.send(JSON.stringify(resp));
 
                     console.log(game.guesses);
-                }
+                } 
                 break;
             case msg.T_CHECK_COLORS:
-                if(game.turn < 9) {
+                console.log("CHECK WITH TURN: ");
+                console.log(game.turn);
+                if(game.turn <= 9) {
                     // Add the check colors (array) to array of guesses
                     game.checks.push(msgObj.data);
+
+                    if (checkGameWon(msgObj.data)) {
+                        endGameJSONSend(game.player2, game.player1);
+                        return;
+                    } else if (game.turn == 9) {
+                        endGameJSONSend(game.player1, game.player2);
+                        return;
+                    }
 
                     game.turn++;                // Update turn count
                     let resp = msg.O_NEXT_TURN; // Send client info about new turn
@@ -131,5 +141,23 @@ wss.on("connection", function (ws) {
         console.log(Object.keys(activePlayers));
     };
 });
+
+function checkGameWon(arr) {
+    if (arr.length === 4 && arr.filter(x => x==="black").length === 4) return true;
+    console.log("ARR:");
+    console.log(arr);
+    return false;
+}
+
+function endGameJSONSend(winner, loser) {
+    let winMessage = msg.O_GAME_WON;
+    let loseMessage = msg.O_GAME_LOST;
+
+    winMessage.data = "Setter wins!";
+    loseMessage.data = "You lose!";
+
+    winner.send(JSON.stringify(winMessage));
+    loser.send(JSON.stringify(loseMessage));
+}
 
 server.listen(port, '0.0.0.0');
