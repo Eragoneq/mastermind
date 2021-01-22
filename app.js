@@ -111,7 +111,7 @@ wss.on("connection", function (ws) {
                         game.setStatus('CLOSED');
                         endGame(game.player2, game.player1, game, true);
                         return;
-                    } else if (game.turn == 9) {
+                    } else if (game.turn == 8) {
                         statistics.gamesActiveRemove();
                         game.setStatus('CLOSED');
                         endGame(game.player1, game.player2, game);
